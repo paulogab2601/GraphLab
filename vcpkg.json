@@ -1,0 +1,8 @@
+{
+  "name": "graphlab",
+  "version": "0.1.0",
+  "description": "Research tool for empirical analysis of augmenting paths in max-flow algorithms (PUC Minas thesis)",
+  "homepage": "https://github.com/paulogabriel/graphlab",
+  "license": null,
+  "dependencies": []
+}

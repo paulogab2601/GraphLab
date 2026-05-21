@@ -1,0 +1,10 @@
+{
+  "permissions": {
+    "allow": [
+      "PowerShell(Get-ChildItem \"C:\\\\Program Files \\(x86\\)\\\\Microsoft Visual Studio\" -Directory -ErrorAction SilentlyContinue | ForEach-Object { Get-ChildItem $_.FullName -Directory -ErrorAction SilentlyContinue | ForEach-Object { $_.FullName } })",
+      "PowerShell($vswhere = \"${env:ProgramFiles\\(x86\\)}\\\\Microsoft Visual Studio\\\\Installer\\\\vswhere.exe\"; Test-Path $vswhere; Write-Output \"---\"; $bt = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft Visual Studio\\\\2022\\\\BuildTools\"; Get-ChildItem -Path \"$bt\" -Filter \"cl.exe\" -Recurse -ErrorAction SilentlyContinue | Select-Object -First 5 -ExpandProperty FullName)",
+      "PowerShell($bt = \"C:\\\\Program Files \\(x86\\)\\\\Microsoft Visual Studio\\\\2022\\\\BuildTools\"; Get-ChildItem -Path \"$bt\" -Filter \"cmake.exe\" -Recurse -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName; Write-Output \"---\"; Get-ChildItem -Path \"$bt\" -Filter \"ninja.exe\" -Recurse -ErrorAction SilentlyContinue | Select-Object -ExpandProperty FullName; Write-Output \"---\"; Test-Path \"$bt\\\\Common7\\\\Tools\\\\VsDevCmd.bat\")",
+      "Bash(git -C \"c:/Users/paulo/Desktop/Repositories/GraphLab\" status --short)"
+    ]
+  }
+}

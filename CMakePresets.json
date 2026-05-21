@@ -1,0 +1,125 @@
+{
+  "version": 6,
+  "cmakeMinimumRequired": { "major": 3, "minor": 23, "patch": 0 },
+
+  "configurePresets": [
+    {
+      "name": "_base",
+      "hidden": true,
+      "binaryDir": "${sourceDir}/build/${presetName}",
+      "cacheVariables": {
+        "CMAKE_EXPORT_COMPILE_COMMANDS": "ON",
+        "GRAPHLAB_BUILD_TESTS": "ON"
+      }
+    },
+    {
+      "name": "_vcpkg",
+      "hidden": true,
+      "description": "Inherit when vcpkg deps are required (Phase 3+). Requires env VCPKG_ROOT.",
+      "cacheVariables": {
+        "CMAKE_TOOLCHAIN_FILE": "$env{VCPKG_ROOT}/scripts/buildsystems/vcpkg.cmake"
+      }
+    },
+
+    {
+      "name": "windows-msvc-debug",
+      "displayName": "Windows MSVC (Debug, no vcpkg)",
+      "inherits": ["_base"],
+      "generator": "Ninja",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "windows-msvc-release",
+      "displayName": "Windows MSVC (Release, no vcpkg)",
+      "inherits": ["_base"],
+      "generator": "Ninja",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "windows-vs2022",
+      "displayName": "Visual Studio 2022 multi-config",
+      "inherits": ["_base"],
+      "generator": "Visual Studio 17 2022",
+      "architecture": "x64",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" }
+    },
+
+    {
+      "name": "windows-msvc-vcpkg-debug",
+      "displayName": "Windows MSVC + vcpkg (Debug)",
+      "inherits": ["_base", "_vcpkg"],
+      "generator": "Ninja",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+    {
+      "name": "windows-msvc-vcpkg-release",
+      "displayName": "Windows MSVC + vcpkg (Release)",
+      "inherits": ["_base", "_vcpkg"],
+      "generator": "Ninja",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Windows" },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "cl",
+        "CMAKE_CXX_COMPILER": "cl"
+      }
+    },
+
+    {
+      "name": "linux-gcc-debug",
+      "displayName": "Linux GCC (Debug)",
+      "inherits": ["_base"],
+      "generator": "Ninja",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Debug",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    },
+    {
+      "name": "linux-gcc-release",
+      "displayName": "Linux GCC (Release)",
+      "inherits": ["_base"],
+      "generator": "Ninja",
+      "condition": { "type": "equals", "lhs": "${hostSystemName}", "rhs": "Linux" },
+      "cacheVariables": {
+        "CMAKE_BUILD_TYPE": "Release",
+        "CMAKE_C_COMPILER": "gcc",
+        "CMAKE_CXX_COMPILER": "g++"
+      }
+    }
+  ],
+
+  "buildPresets": [
+    { "name": "windows-msvc-debug",         "configurePreset": "windows-msvc-debug" },
+    { "name": "windows-msvc-release",       "configurePreset": "windows-msvc-release" },
+    { "name": "windows-msvc-vcpkg-debug",   "configurePreset": "windows-msvc-vcpkg-debug" },
+    { "name": "windows-msvc-vcpkg-release", "configurePreset": "windows-msvc-vcpkg-release" },
+    { "name": "windows-vs2022-debug",       "configurePreset": "windows-vs2022", "configuration": "Debug" },
+    { "name": "windows-vs2022-release",     "configurePreset": "windows-vs2022", "configuration": "Release" },
+    { "name": "linux-gcc-debug",            "configurePreset": "linux-gcc-debug" },
+    { "name": "linux-gcc-release",          "configurePreset": "linux-gcc-release" }
+  ],
+
+  "testPresets": [
+    { "name": "windows-msvc-debug",   "configurePreset": "windows-msvc-debug",   "output": { "outputOnFailure": true } },
+    { "name": "windows-msvc-release", "configurePreset": "windows-msvc-release", "output": { "outputOnFailure": true } },
+    { "name": "linux-gcc-debug",      "configurePreset": "linux-gcc-debug",      "output": { "outputOnFailure": true } },
+    { "name": "linux-gcc-release",    "configurePreset": "linux-gcc-release",    "output": { "outputOnFailure": true } }
+  ]
+}
